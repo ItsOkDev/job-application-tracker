@@ -52,6 +52,47 @@ def search_job():
                 else:
                     print("No jobs found matching the criteria.")
 
+def filter_jobs():
+    print("\nFilter Jobs By:")
+    print("1. Role")
+    print("2. Location")
+
+    option = input("Choose an option: ")
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        next(reader, None)  # skip header
+        found = False
+
+        if option == "1":
+            role = input("Enter role to filter: ").lower()
+            print("\nFiltered Results:")
+            for row in reader:
+                if role in row[1].lower():
+                    print(
+                        f"Company: {row[0]}, Role: {row[1]}, "
+                        f"Location: {row[2]}, Status: {row[3]}, Date: {row[4]}"
+                    )
+                    found = True
+
+        elif option == "2":
+            location = input("Enter location to filter: ").lower()
+            print("\nFiltered Results:")
+            for row in reader:
+                if location in row[2].lower():
+                    print(
+                        f"Company: {row[0]}, Role: {row[1]}, "
+                        f"Location: {row[2]}, Status: {row[3]}, Date: {row[4]}"
+                    )
+                    found = True
+        else:
+            print("❌ Invalid filter option")
+            return
+
+        if not found:
+            print("❌ No matching job applications found.")
+
+
 def view_jobs():
     with open("data/jobs.csv", "r") as file:
         reader = csv.reader(file)
@@ -95,12 +136,13 @@ if __name__ == "__main__":
     init_file()
 
     while True:
-        print("\nJob Application Tracker")
         print("1. Add Job")
         print("2. View Jobs")
         print("3. Update Job Status")
-        print("4. Search Job")
-        print("5. Exit")
+        print("4. Search Jobs")
+        print("5. Filter Jobs")
+        print("6. Exit")
+
 
         choice = input("Choose an option: ")
 
@@ -115,11 +157,13 @@ if __name__ == "__main__":
             view_jobs()
         elif choice == "3":
             update_job_status()
-        
         elif choice == "4":
             search_job()
         elif choice == "5":
+            filter_jobs()
+        elif choice == "6":
             print("Goodbye 👋")
             break
+
         else:
             print("❌ Invalid choice")
