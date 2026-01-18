@@ -1,6 +1,7 @@
 import csv
 import os
 from datetime import datetime
+from openpyxl import Workbook
 
 
 def init_file():
@@ -9,6 +10,20 @@ def init_file():
         with open("data/jobs.csv", "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(["Company", "Role", "Location", "Status", "Date"])
+
+
+def export_to_excel():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Job Applications"
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            ws.append(row)
+
+    wb.save("job_applications.xlsx")
+    print("✅ Jobs exported to job_applications.xlsx")
 
 
 def add_job(company, role, location, status):
@@ -141,7 +156,8 @@ if __name__ == "__main__":
         print("3. Update Job Status")
         print("4. Search Jobs")
         print("5. Filter Jobs")
-        print("6. Exit")
+        print("6. Export to Excel")
+        print("7. Exit")
 
 
         choice = input("Choose an option: ")
@@ -162,6 +178,8 @@ if __name__ == "__main__":
         elif choice == "5":
             filter_jobs()
         elif choice == "6":
+            export_to_excel()
+        elif choice == "7":
             print("Goodbye 👋")
             break
 
