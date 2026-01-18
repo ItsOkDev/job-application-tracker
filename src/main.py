@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 
-def add_job(company, role, location, status):
+def add_job(company, role, location, status):       # function expects 4, got 4
     with open("data/jobs.csv", "a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([
