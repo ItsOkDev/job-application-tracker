@@ -23,6 +23,34 @@ def add_job(company, role, location, status):
         ])
     print("✅ Job added successfully")
 
+def search_job():
+    print("\n search job by company name")
+    print("1. company name")
+    print("2. status")
+
+    choice = input("Choose an option: ")
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        next(reader, None)
+        print("\nYour Job Applications:")
+        for row in reader:
+            if choice == "1":
+                company_name = input("Enter company name: ")
+                if row[0].lower() == company_name.lower():
+                    print(
+                        f"Company: {row[0]}, Role: {row[1]}, "
+                        f"Location: {row[2]}, Status: {row[3]}, Date: {row[4]}"
+                    )
+            elif choice == "2":
+                status = input("Enter status: ")
+                if row[3].lower() == status.lower():
+                    print(
+                        f"Company: {row[0]}, Role: {row[1]}, "
+                        f"Location: {row[2]}, Status: {row[3]}, Date: {row[4]}"
+                    )
+                else:
+                    print("No jobs found matching the criteria.")
 
 def view_jobs():
     with open("data/jobs.csv", "r") as file:
@@ -71,7 +99,8 @@ if __name__ == "__main__":
         print("1. Add Job")
         print("2. View Jobs")
         print("3. Update Job Status")
-        print("4. Exit")
+        print("4. Search Job")
+        print("5. Exit")
 
         choice = input("Choose an option: ")
 
@@ -86,7 +115,10 @@ if __name__ == "__main__":
             view_jobs()
         elif choice == "3":
             update_job_status()
+        
         elif choice == "4":
+            search_job()
+        elif choice == "5":
             print("Goodbye 👋")
             break
         else:
