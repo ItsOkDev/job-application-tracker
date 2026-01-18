@@ -1,8 +1,16 @@
 import csv
+import os
 from datetime import datetime
 
 
-#Day 1: Add Job Functionality
+def init_file():
+    os.makedirs("data", exist_ok=True)
+    if not os.path.exists("data/jobs.csv"):
+        with open("data/jobs.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Company", "Role", "Location", "Status", "Date"])
+
+
 def add_job(company, role, location, status):
     with open("data/jobs.csv", "a", newline="") as file:
         writer = csv.writer(file)
@@ -15,36 +23,71 @@ def add_job(company, role, location, status):
         ])
     print("✅ Job added successfully")
 
-#Day 2: View Jobs Functionality
+
 def view_jobs():
     with open("data/jobs.csv", "r") as file:
         reader = csv.reader(file)
-        print("Your Job Applications:")
+        next(reader, None)
+        print("\nYour Job Applications:")
         for row in reader:
-            print(f"Company: {row[0]}, Role: {row[1]}, Location: {row[2]}, Status: {row[3]}, Date Applied: {row[4]}")
+            print(
+                f"Company: {row[0]}, Role: {row[1]}, "
+                f"Location: {row[2]}, Status: {row[3]}, Date: {row[4]}"
+            )
 
 
-#Day 1: Main Loop
+def update_job_status():
+    company_name = input("Enter company name: ")
+    updated_rows = []
+    found = False
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        updated_rows.append(header)
+
+        for row in reader:
+            if row[0].lower() == company_name.lower():
+                row[3] = input("Enter new status: ")
+                found = True
+            updated_rows.append(row)
+
+    if not found:
+        print("❌ Company not found")
+        return
+
+    with open("data/jobs.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(updated_rows)
+
+    print("✅ Status updated successfully")
+
+
 if __name__ == "__main__":
+    init_file()
+
     while True:
-        print("Job Application Tracker")
+        print("\nJob Application Tracker")
         print("1. Add Job")
         print("2. View Jobs")
-        print("3. Exit")
+        print("3. Update Job Status")
+        print("4. Exit")
+
         choice = input("Choose an option: ")
 
         if choice == "1":
-            company = input("Company: ")
-            role = input("Role: ")
-            location = input("Location: ")
-            status = input("Status (e.g., Applied, Interviewing, Offered): ")
-            add_job(company, role, location, status)
+            add_job(
+                input("Company: "),
+                input("Role: "),
+                input("Location: "),
+                input("Status: ")
+            )
         elif choice == "2":
             view_jobs()
         elif choice == "3":
+            update_job_status()
+        elif choice == "4":
+            print("Goodbye 👋")
             break
         else:
-            print("Invalid choice. Please try again.")
-
-
-        
+            print("❌ Invalid choice")
