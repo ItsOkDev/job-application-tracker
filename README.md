@@ -1,24 +1,27 @@
-# Job Application Tracker (Python)
+# Job Application Tracker (Python Automation Project)
 
-A Python-based automation project to track and manage job applications efficiently.  
-The application allows users to store, update, search, filter, and export job application data using a simple command-line interface.
+A Python-based job application tracking system designed to simulate real-world automation and RPA workflows.  
+The application allows users to manage job applications efficiently using a command-line interface with secure configuration and clean Git practices.
 
 ---
 
 ## 🚀 Features
-- Add new job applications
-- View all applications
-- Update application status (Applied / Interview / Rejected)
-- Search jobs by company or status
+- Add, view, edit, update, and delete job applications (full CRUD)
+- Search jobs by company and status
 - Filter jobs by role and location
 - Export job data to Excel using openpyxl
+- Send automated email reminders for pending job applications
+- Secure handling of credentials using environment variables (.env)
+- Clean Git history with runtime data excluded via .gitignore
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 - Python
-- CSV file handling
-- openpyxl (Excel automation)
+- CSV File Handling
+- openpyxl (Excel Automation)
+- SMTP (Email Automation)
+- python-dotenv (Environment Variables)
 - Git & GitHub
 - VS Code
 
@@ -26,32 +29,38 @@ The application allows users to store, update, search, filter, and export job ap
 
 ## ▶️ How to Run
 ```bash
-python tracker.py
+python src/main.py
 
 
 📁 Project Structure
 job-application-tracker/
-│── tracker.py
-│── README.md
+│── src/
+│   └── main.py
+│── data/
+│   └── jobs.csv   # generated at runtime (ignored by Git)
 │── .gitignore
-└── data/
-    └── jobs.csv
+│── README.md
 
 
 💡 Use Case
 
-This project simulates a real-world job tracking and follow-up system and can be extended into:
-1. RPA workflows (UiPath / Selenium)
-2. Email follow-up automation
-3. Database-backed applications
+This project replicates a real-world job tracking and follow-up system and is designed to be extended into:
+RPA workflows (UiPath / Selenium)
+Database-backed applications
+Scheduled reminder automation
+
+🔐 Security Practices
+
+Sensitive credentials are stored using environment variables
+.env files are excluded from version control
+Runtime data is ignored to maintain clean repositories
 
 📌 Future Enhancements
 
-Email reminders for follow-ups
+Follow-up reminders based on application date
 Export filtered results to Excel
-UI-based application (Tkinter / Web)
-
-Full RPA bot integration
+SQL / database integration
+UI-based application
 
 👤 Author
 Devesh Pawar
