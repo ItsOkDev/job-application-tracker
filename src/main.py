@@ -2,6 +2,10 @@ import csv
 import os
 from datetime import datetime
 from openpyxl import Workbook
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
+import os
 
 
 def init_file():
@@ -24,6 +28,49 @@ def export_to_excel():
 
     wb.save("job_applications.xlsx")
     print("✅ Jobs exported to job_applications.xlsx")
+
+
+def send_email_reminders():
+    load_dotenv()
+
+    sender_email = os.getenv("EMAIL_ADDRESS")
+    sender_password = os.getenv("EMAIL_PASSWORD")
+
+    if not sender_email or not sender_password:
+        print("❌ Email credentials not found.")
+        return
+
+    msg = EmailMessage()
+    msg["From"] = sender_email
+    msg["To"] = sender_email  # sending to yourself
+    msg["Subject"] = "Job Application Follow-up Reminder"
+
+    body = "Follow up on these job applications:\n\n"
+    reminder_found = False
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        next(reader, None)
+
+        for row in reader:
+            if row[3].lower() == "applied":
+                reminder_found = True
+                body += f"- {row[0]} | {row[1]} | {row[2]} | Applied on {row[4]}\n"
+
+    if not reminder_found:
+        print("✅ No pending applications for reminder.")
+        return
+
+    msg.set_content(body)
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender_email, sender_password)
+            server.send_message(msg)
+        print("📧 Reminder email sent successfully!")
+    except Exception as e:
+        print("❌ Failed to send email:", e)
+
 
 
 def add_job(company, role, location, status):
@@ -157,7 +204,9 @@ if __name__ == "__main__":
         print("4. Search Jobs")
         print("5. Filter Jobs")
         print("6. Export to Excel")
-        print("7. Exit")
+        print("7. Send Email Reminder")
+        print("8. Exit")
+
 
 
         choice = input("Choose an option: ")
@@ -180,6 +229,8 @@ if __name__ == "__main__":
         elif choice == "6":
             export_to_excel()
         elif choice == "7":
+            send_email_reminders()
+        elif choice == "8":
             print("Goodbye 👋")
             break
 
