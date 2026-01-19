@@ -29,6 +29,38 @@ def export_to_excel():
     wb.save("job_applications.xlsx")
     print("✅ Jobs exported to job_applications.xlsx")
 
+def delete_job():
+    company_name = input("Enter company name to delete: ").lower()
+    updated_rows = []
+    found = False
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        updated_rows.append(header)
+
+        for row in reader:
+            if row[0].lower() == company_name:
+                found = True
+                continue  # skip this row (delete)
+            updated_rows.append(row)
+
+    if not found:
+        print("❌ Company not found. No job deleted.")
+        return
+
+    confirm = input("Are you sure you want to delete this job? (yes/no): ").lower()
+    if confirm != "yes":
+        print("❌ Delete cancelled.")
+        return
+
+    with open("data/jobs.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(updated_rows)
+
+    print("🗑️ Job deleted successfully!")
+
+
 
 def send_email_reminders():
     load_dotenv()
@@ -70,6 +102,49 @@ def send_email_reminders():
         print("📧 Reminder email sent successfully!")
     except Exception as e:
         print("❌ Failed to send email:", e)
+
+
+def edit_job():
+    company_name = input("Enter company name to edit: ").lower()
+    updated_rows = []
+    found = False
+
+    with open("data/jobs.csv", "r") as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        updated_rows.append(header)
+
+        for row in reader:
+            if row[0].lower() == company_name:
+                found = True
+                print("\nCurrent Details:")
+                print(f"1. Role: {row[1]}")
+                print(f"2. Location: {row[2]}")
+                print(f"3. Status: {row[3]}")
+                print("Press Enter to keep existing value")
+
+                new_role = input("New Role: ")
+                new_location = input("New Location: ")
+                new_status = input("New Status: ")
+
+                if new_role.strip():
+                    row[1] = new_role
+                if new_location.strip():
+                    row[2] = new_location
+                if new_status.strip():
+                    row[3] = new_status
+
+            updated_rows.append(row)
+
+    if not found:
+        print("❌ Company not found. No changes made.")
+        return
+
+    with open("data/jobs.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(updated_rows)
+
+    print("✏️ Job details updated successfully!")
 
 
 
@@ -205,7 +280,9 @@ if __name__ == "__main__":
         print("5. Filter Jobs")
         print("6. Export to Excel")
         print("7. Send Email Reminder")
-        print("8. Exit")
+        print("8. Edit Job")
+        print("9. Delete Job")
+        print("10. Exit")
 
 
 
@@ -231,8 +308,13 @@ if __name__ == "__main__":
         elif choice == "7":
             send_email_reminders()
         elif choice == "8":
+            edit_job()
+        elif choice == "9":
+            delete_job()
+        elif choice == "10":
             print("Goodbye 👋")
             break
+
 
         else:
             print("❌ Invalid choice")
