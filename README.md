@@ -28,10 +28,9 @@ The application allows users to manage job applications efficiently using a comm
 ---
 
 ## ▶️ How to Run
-```bash
 python src/main.py
 
-
+```bash
 📁 Project Structure
 job-application-tracker/
 │── src/
@@ -40,27 +39,27 @@ job-application-tracker/
 │   └── jobs.csv   # generated at runtime (ignored by Git)
 │── .gitignore
 │── README.md
+```
 
-
-💡 Use Case
+## 💡 Use Case
 
 This project replicates a real-world job tracking and follow-up system and is designed to be extended into:
 RPA workflows (UiPath / Selenium)
 Database-backed applications
 Scheduled reminder automation
 
-🔐 Security Practices
+## 🔐 Security Practices
 
 Sensitive credentials are stored using environment variables
 .env files are excluded from version control
 Runtime data is ignored to maintain clean repositories
 
-📌 Future Enhancements
+## 📌 Future Enhancements
 
 Follow-up reminders based on application date
 Export filtered results to Excel
 SQL / database integration
 UI-based application
 
-👤 Author
+## 👤 Author
 Devesh Pawar
