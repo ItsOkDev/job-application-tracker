@@ -1,3 +1,4 @@
 .env
 __pycache__/
 data/jobs.csv
+NREADME.md
